@@ -70,10 +70,29 @@ const getCategories = async (req, res) => {
 
 const sortProductByHighPrice = async (req,res) => {
     try{
-        const products = await productModel.find({}).sort({product_price:1});
+        const products = await productModel.find({}).sort({product_price:-1});
         res.json({data:products});
     }catch(error){
         res.status(500).json({error:"Price is not sorted"});
+    }
+}
+
+const sortProductByLowPrice = async (req,res) => {
+    try{
+        const products  = await productModel.find({}).sort({product_price:1});
+        res.json({data:products});
+    }catch(error){
+        res.status(500).json({error:'Price is not Low sorted'});
+    }
+}
+
+const recentAddedProduct = async(req,res)=>{
+    try{
+        const products = await productModel.find({}).sort({createdAt:1});
+        console.log(products);
+        res.json({data:products});
+    }catch(error){
+        res.status(500).json({error:"Error fetching recent added products"});
     }
 }
 
@@ -84,5 +103,7 @@ module.exports = {
     updateProduct,
     deleteProduct,
     getCategories,
-    sortProductByHighPrice
-}
+    sortProductByHighPrice,
+    sortProductByLowPrice,
+    recentAddedProduct
+};
