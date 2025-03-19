@@ -47,24 +47,42 @@ const updateProduct = async (req, res) => {
     }
 }
 
-const deleteProduct = async (req,res) =>{
-    try{
+const deleteProduct = async (req, res) => {
+    try {
         const deletedProduct = await productModel.findByIdAndDelete(req.params.id);
-        if(!deletedProduct){
-            return res.status(404).json({success:false, error:"Delete operation failed check id again"});
+        if (!deletedProduct) {
+            return res.status(404).json({ success: false, error: "Delete operation failed check id again" });
         }
-            res.json({success:true, message:"Product deleted successfully"});
-        } catch(error){
-            res.status(500).json({success:false, error:"Error deleting Product"})
-        }
+        res.json({ success: true, message: "Product deleted successfully" });
+    } catch (error) {
+        res.status(500).json({ success: false, error: "Error deleting Product" })
     }
+}
 
+const getCategories = async (req, res) => {
+    try {
+        const getCategories = await productModel.find({}).distinct('category');
+        res.json({ success: true, data: getCategories });
+    } catch (error) {
+        res.status(500).json({ success: false, error: "Error fetching categories" });
+    }
+}
 
+const sortProductByHighPrice = async (req,res) => {
+    try{
+        const products = await productModel.find({}).sort({product_price:1});
+        res.json({data:products});
+    }catch(error){
+        res.status(500).json({error:"Price is not sorted"});
+    }
+}
 
 module.exports = {
     createProduct,
     getProducts,
     getProductById,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    getCategories,
+    sortProductByHighPrice
 }
