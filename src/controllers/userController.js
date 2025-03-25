@@ -8,12 +8,12 @@ const registerUser = async (req, res) => {
 
     try {
         if (await user.findOne({ email })) {
+            console.log("User already exists👤>>>>>>",req.body);
             return res.status(400).json({ message: "User already exists" });
         }
-
         const newUser = await user.create({ name, email, password });
-
         if (newUser) {
+            console.log("New User created👤>>>>>>",newUser);
             return res.status(201).json({
                 _id: newUser._id,
                 name: newUser.name,
@@ -21,16 +21,15 @@ const registerUser = async (req, res) => {
                 token: generateToken(newUser._id)
             });
         }
-
         res.status(400).json({ message: "Invalid user data" });
     } catch (error) {
+        console.log("Error registering User🚫>>>>>>",error);
         res.status(400).json({ message: 'Error registering User' });
     }
 };
 
 const loginUser = async (req, res) => {
     const { email, password } = req.body;
-
     try {
         //console.log("Email 2Login📧>>>>>>>>>>>",email,"Password used >>>>>>", password);
         const userExists = await user.findOne({ email });
@@ -73,6 +72,15 @@ const getUserProfile = async (req, res) => {
         res.status(500).json({ error: "Error fetching user profile" });
     }
 };
+
+
+// const getUsers =  async(req,res)=>{
+//     try{
+//         const users =  await user.find({});
+
+//     }
+// }
+
 
 module.exports = { registerUser, loginUser, getUserProfile };
 

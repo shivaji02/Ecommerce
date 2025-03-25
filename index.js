@@ -4,7 +4,7 @@ const ConnectDB = require('./src/config/index');
 const cors = require('cors');
 const productRoutes = require('./src/routes/productRoute');
 const userRoutes = require('./src/routes/userRoutes');
-
+const cartRoutes = require('./src/routes/cartRoutes');
 
 
 const app = express();
@@ -17,6 +17,7 @@ app.use(express.json());
 //Routes
 app.use('/api/products',productRoutes);
 app.use('/api/users',userRoutes);
+app.use('./api/cart',cartRoutes);
 
 app.get('/', (req, res) => {
     res.send(">>>>>>>Ecommerce API server is Running 🚀 successfully");
