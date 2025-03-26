@@ -2,11 +2,7 @@ const { mongo, default: mongoose } = require("mongoose");
 
 const productSchema = new mongoose.Schema({
 
-    productId:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'Product',
-        required:true
-    },
+   
     product_name: {
         type: String,
         required: true
@@ -17,7 +13,14 @@ const productSchema = new mongoose.Schema({
     },
     isInStock: {
         type: Boolean,
-        required: true
+        get: function() {
+            return this.stockQuantity > 0;
+        }
+    },
+    stockQuantity: {
+        type:Number,
+        default:0,
+        required:true
     },
     category: {
         type: String,

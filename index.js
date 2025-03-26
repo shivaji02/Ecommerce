@@ -5,7 +5,7 @@ const cors = require('cors');
 const productRoutes = require('./src/routes/productRoute');
 const userRoutes = require('./src/routes/userRoutes');
 const cartRoutes = require('./src/routes/cartRoutes');
-
+const orderRoutes = require('./src/routes/orderRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -18,6 +18,7 @@ app.use(express.json());
 app.use('/api/products',productRoutes);
 app.use('/api/users',userRoutes);
 app.use('./api/cart',cartRoutes);
+app.use('./api/order',orderRoutes);
 
 app.get('/', (req, res) => {
     res.send(">>>>>>>Ecommerce API server is Running 🚀 successfully");
