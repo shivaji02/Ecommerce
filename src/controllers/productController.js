@@ -67,23 +67,25 @@ const getCategories = async (req, res) => {
     }
 }
 
-const sortProductByHighPrice = async (req,res) => {
-    try{
-        const products = await productModel.find({}).sort({product_price:-1});
-        res.json({data:products});
-    }catch(error){
-        res.status(500).json({error:"Price is not sorted"});
-    }
-}
+const sortProducts = async (req, res) => {
 
-const sortProductByLowPrice = async (req,res) => {
     try{
-        const products  = await productModel.find({}).sort({product_price:1});
-        res.json({data:products});
-    }catch(error){
-        res.status(500).json({error:'Price is not Low sorted'});
+        const {sortBy } = req.query;
+        let sortOption  = {};
+        if(sortBy  === 'highPrice'){
+            sortOption  = {product_price:-1};
+        } else if(sortBy === 'lowPrice'){
+            sortOption  = {product_price:1};
+        }else {
+            return res.status(400).json({success:false,error:'Wrong sort opted'});
+        }
+
+        const products = await productModel.find({}).sort(sortOption);
+        res.json({success:true, data:products})
+    } catch(error){
+        res.status(500).json({success:false,error:'Error sorting  products'})
     }
-}
+};
 
 const recentAddedProduct = async(req,res)=>{
     try{
@@ -102,7 +104,6 @@ module.exports = {
     updateProduct,
     deleteProduct,
     getCategories,
-    sortProductByHighPrice,
-    sortProductByLowPrice,
+    sortProducts,
     recentAddedProduct
 };
